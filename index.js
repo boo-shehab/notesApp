@@ -63,7 +63,7 @@ const server = http.createServer(async (req, res) => {
     }
 })
 
-
-server.listen(8080, () => {
-    console.log(`Server is running on port ${8080}`)
-})
+const PORT = process.env.MYSQLPORT || 8080;
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
