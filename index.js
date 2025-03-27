@@ -52,7 +52,7 @@ const server = http.createServer(async (req, res) => {
                 res.end(JSON.stringify(newNote))
             } catch (error) {
                 res.writeHead(500, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify({ error: 'Database Insert Error:'+error }))
+                res.end(JSON.stringify({ error: 'Failed to create note' }))
             }
         })
     } 
