@@ -60,9 +60,11 @@ const server = http.createServer(async (req, res) => {
                 const updatedNote = await EditNote(title, contents, id);
                 res.writeHead(201, { 'Content-Type': 'application/json' })
                 res.end(JSON.stringify(updatedNote))
-            }catch(error) {
-
+            } catch (error) {
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Failed to update note: ' + error.message }));
             }
+            
         })
     }
     // Route: POST /notes

@@ -31,13 +31,12 @@ export const createNote = async(title, contents) => {
 
     return getNote(result.insertId)
 }
-
-export const EditNote = async(title, contents, id) => {
+export const EditNote = async (title, contents, id) => {
     const [result] = await pool.query(`
-        UPDATE notes (title, contents)
+        UPDATE notes
         SET title = ?, contents = ?
         WHERE id = ?
-        `,[title, contents, id])
-        
-    return getNote(id) 
-}
+    `, [title, contents, id]);
+
+    return getNote(id);
+};
