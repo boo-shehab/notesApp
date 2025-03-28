@@ -1,6 +1,6 @@
 import http from 'http'
 import { URL } from 'url'
-import { getNotes, getNote, createNote } from './database.js'
+import { getNotes, getNote, createNote, EditNote } from './database.js'
 
 const server = http.createServer(async (req, res) => {
     const parsedUrl = new URL(req.url, `http://${req.headers.host}`)
@@ -42,6 +42,29 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({ error: 'Failed to fetch note' }))
         }
     } 
+    else if (parsedUrl.pathname.startsWith('/notes/') && req.method === 'PUT') {
+        const id = parsedUrl.pathname.split('/')[2]
+        let body = ''
+        req.on('data', chunk => {
+            body += chunk.toString()
+        })
+        req.on('end', async () => {
+            try {
+                const { title, contents } = JSON.parse(body)
+                if (!title || !contents) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' })
+                    res.end(JSON.stringify({ error: 'Title and contents are required' }))
+                    return
+                }
+
+                const updatedNote = await EditNote(title, contents, id);
+                res.writeHead(201, { 'Content-Type': 'application/json' })
+                res.end(JSON.stringify(updatedNote))
+            }catch(error) {
+
+            }
+        })
+    }
     // Route: POST /notes
     else if (parsedUrl.pathname === '/notes' && req.method === 'POST') {
         let body = ''
