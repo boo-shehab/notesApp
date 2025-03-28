@@ -67,6 +67,18 @@ const server = http.createServer(async (req, res) => {
             
         })
     }
+    else if (parsedUrl.pathname.startsWith('/notes/') && req.method === 'DELETE') {
+        const id = parsedUrl.pathname.split('/')[2];
+    
+        try {
+            await deleteNote(id);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'Note deleted successfully' }));
+        } catch (error) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Failed to delete note: ' + error.message }));
+        }
+    }
     // Route: POST /notes
     else if (parsedUrl.pathname === '/notes' && req.method === 'POST') {
         let body = ''

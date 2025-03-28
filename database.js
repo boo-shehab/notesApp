@@ -40,3 +40,9 @@ export const EditNote = async (title, contents, id) => {
 
     return getNote(id);
 };
+
+export const deleteNote = async (id) => {
+    await pool.query(`
+        DELETE FROM notes WHERE id = ?
+    `, [id]);
+};
