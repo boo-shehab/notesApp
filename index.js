@@ -1,6 +1,6 @@
 import http from 'http'
 import { URL } from 'url'
-import { getNotes, getNote, createNote, EditNote } from './database.js'
+import { getNotes, getNote, createNote, EditNote, deleteNote } from './database.js'
 
 const server = http.createServer(async (req, res) => {
     const parsedUrl = new URL(req.url, `http://${req.headers.host}`)
